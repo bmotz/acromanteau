@@ -46,9 +46,9 @@ acromanteau <- function(testwords,minlength,restrict){
     # turn test word into grep pattern
     pattern <- paste(gsub("*","\\\\D*",test))
     pattern <- substr(pattern,4,nchar(pattern))
+    # have we got one with this word yet 
+    gotone <- FALSE
     for (i in 1:length(permwords)) {
-      # have we got one with this word yet 
-      gotone <- FALSE
       # collapse this arrangement of words
       collapsed <- paste(permwords[[i]],collapse='')
       # test it
