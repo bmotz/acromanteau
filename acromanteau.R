@@ -1,0 +1,78 @@
+# Acromanteau.R
+#
+# Function for identifying acromanteaus
+# https://github.com/bmotz/acromanteau
+#
+# Example Usage:
+# 
+# # Words to Test
+# testwords <- c('random','word','alloy')
+# # Minimum length of matching portmanteaus
+# minlength <- 5
+# # Restrict order of test words?
+# restrict <- FALSE
+# 
+# output <- acromanteau(testwords,minlength,restrict)
+#
+# Output is a dataframe where every row is a matching acromanteau
+# Note: output is restricted to the first-identified ordering of 
+# testwords that fit a match. 
+
+acromanteau <- function(testwords,minlength,restrict){
+  
+  require(combinat)
+  require(words)
+  
+  if (restrict) {
+    permwords <- list(testwords)
+  } else {
+    # Create all permutations
+    permwords <- permn(testwords)
+  }
+  
+  # initialize output
+  output <- data.frame(match=character(),
+                       matchlength=integer(),
+                       testwords=character())
+  
+  #tic <- Sys.time()
+  for (w in 1:nrow(words)) {
+    # test word
+    test <- words[w,1]
+    # if test word is <= 3 letters, don't bother
+    if (words[w,2] < minlength) {
+      next
+    }
+    # turn test word into grep pattern
+    pattern <- paste(gsub("*","\\\\D*",test))
+    pattern <- substr(pattern,4,nchar(pattern))
+    for (i in 1:length(permwords)) {
+      # have we got one with this word yet 
+      gotone <- FALSE
+      # collapse this arrangement of words
+      collapsed <- paste(permwords[[i]],collapse='')
+      # test it
+      # first letter must match
+      if (substr(pattern,1,1)==substr(collapsed,1,1)) {
+        # make sure there's not an identity relationship with any word
+        if (!is.element(test,testwords)) {
+          # do a pattern match
+          if (grepl(pattern=pattern,collapsed)) {
+            # store details
+            output[nrow(output)+1,] <- c(test,words[w,2],collapsed)
+            gotone <- TRUE
+          }
+        }
+      }
+      # if we've got one for this word, move on
+      if (gotone) {
+        break
+      }
+    }
+  }
+  #toc <- Sys.time()
+  #difftime(toc,tic)
+  output$matchlength <- as.numeric(output$matchlength)
+  output <- output[order(-output$matchlength),]
+  return(output)
+}
