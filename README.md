@@ -16,7 +16,7 @@ source('acromanteau.R')
 
 # Words to Test
 testwords <- c('random','word','alloy')
-# Minimum length of matching portmanteaus
+# Minimum length of matching acromanteaus
 minlength <- 5
 # Restrict order of test words?
 restrict <- FALSE
