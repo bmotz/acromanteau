@@ -5,6 +5,8 @@
 #
 # Example Usage:
 # 
+# source('acromanteau.R')
+#
 # # Words to Test
 # testwords <- c('random','word','alloy')
 # # Minimum length of matching portmanteaus
