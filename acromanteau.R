@@ -75,9 +75,25 @@ acromanteau <- function(testwords,minlength,restrict){
       }
     }
   }
+  
+  # Format testwords in output so that the acromanteau match is capitalized
+  for (r in 1:nrow(output)) {
+    match <- output$match[r]
+    testwords <- output$testwords[r]
+    for (i in 1:nchar(testwords)) {
+      if (substr(match,1,1) == substr(testwords,i,i)) {
+        testwords <- paste(substr(testwords,1,i-1),toupper(substr(testwords,i,i)),substr(testwords,i+1,nchar(testwords)),sep = "")
+        match <- substr(match,2,nchar(match))
+      }
+    }
+    output$testwords[r] <- testwords
+  }
   #toc <- Sys.time()
   #difftime(toc,tic)
+  
+  # Order the output by the acromanteau's length
   output$matchlength <- as.numeric(output$matchlength)
   output <- output[order(-output$matchlength),]
+  
   return(output)
 }
