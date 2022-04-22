@@ -25,6 +25,9 @@ acromanteau <- function(testwords,minlength,restrict){
   require(combinat)
   require(words)
   
+  # Put testwords in lowercase
+  testwords <- tolower(testwords)
+  
   if (restrict) {
     permwords <- list(testwords)
   } else {
