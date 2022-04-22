@@ -12,7 +12,10 @@ Usage:
 # Clean-up
 rm(list=ls())
 
+# If you've downloaded the script to your local working directory
 source('acromanteau.R')
+# Or source directly from online GitHub repository:
+source('https://raw.githubusercontent.com/bmotz/acromanteau/main/acromanteau.R')
 
 # Words to Test
 testwords <- c('random','word','alloy')
