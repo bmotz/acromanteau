@@ -40,6 +40,13 @@ acromanteau <- function(testwords,minlength,restrict){
                        matchlength=integer(),
                        testwords=character())
   
+  # initialize the progress bar
+  pb <- txtProgressBar(min = 0,           # Minimum value of the progress bar
+                       max = nrow(words), # Maximum value of the progress bar
+                       style = 3,         # Progress bar style (also available style = 1 and style = 2)
+                       width = 50,        # Progress bar width. Defaults to getOption("width")
+                       char = "=")        # Character used to create the bar
+  
   #tic <- Sys.time()
   for (w in 1:nrow(words)) {
     # test word
@@ -74,6 +81,7 @@ acromanteau <- function(testwords,minlength,restrict){
         break
       }
     }
+    setTxtProgressBar(pb, w)
   }
   
   # Format testwords in output so that the acromanteau match is capitalized
